@@ -22,6 +22,7 @@ long long mul(string s){
 
 
 int main(){
+    bool Do = 1;
     long long c = 0;
     ios_base::sync_with_stdio(0);
     cin.tie(0);
@@ -29,13 +30,19 @@ int main(){
     freopen("DAY1.INP","r",stdin);
     string inp;
     while(getline(cin,inp)){
-        regex pattern(R"(mul\(\d{1,3},\d{1,3}\))");
+        regex pattern(R"(don't\(\)|do\(\)|mul\(\d{1,3},\d{1,3}\))");
         sregex_iterator it(inp.begin(), inp.end(), pattern);
         sregex_iterator end;
         for(; it != end; ++it){
-            string onlyNum = it->str().substr(4,it->str().size() - 5);
-            //cout << onlyNum << " = " << mul(onlyNum) << endl;
-            c += mul(onlyNum);
+            if(it->str() == "don't()") 
+                Do = 0;
+            else if(it->str() == "do()") 
+                Do = 1;
+            else if(Do == 1){
+                string onlyNum = it->str().substr(4,it->str().size() - 5);
+                //cout << onlyNum << " = " << mul(onlyNum) << endl;
+                c += mul(onlyNum);
+            }
         }
     }
     cout << c;
